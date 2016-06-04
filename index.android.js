@@ -17,6 +17,8 @@ import {
 } from 'react-native';
 import SearchPage from './SearchPage';
 
+import PanResponderExample from './PanResponderExample';
+
 class tedTest extends React.Component {
 
 
@@ -30,7 +32,8 @@ class tedTest extends React.Component {
 
     var defaultName = 'SearchPage';
     var defaultComponent = SearchPage;
-
+    // var defaultComponent = PanResponderExample;
+    // var defaultName = 'PanResponderExample';
     return (
 
 
