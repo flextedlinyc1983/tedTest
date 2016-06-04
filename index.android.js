@@ -14,7 +14,8 @@ import {
   TextInput,
   TouchableHighlight,
   Image,
-  BackAndroid
+  BackAndroid,
+  ToastAndroid
 } from 'react-native';
 import SearchPage from './SearchPage';
 
@@ -22,7 +23,7 @@ import PanResponderExample from './PanResponderExample';
 
 
 var navigator; 
-
+var count=1;
 class tedTest extends React.Component {
 
 
@@ -37,9 +38,15 @@ class tedTest extends React.Component {
 
   componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', () => {
-          console.log('BackAndroid');
+          console.log('navigator.getCurrentRoutes().length' + navigator.getCurrentRoutes().length);
           if (navigator && navigator.getCurrentRoutes().length > 1) {
+              count = 1;
               navigator.pop();
+              return true;
+          }
+          if (navigator && navigator.getCurrentRoutes().length == 1 && count >= 1) {
+              count--;
+              ToastAndroid.show('在按一次退出',ToastAndroid.SHORT);
               return true;
           }
           return false;
