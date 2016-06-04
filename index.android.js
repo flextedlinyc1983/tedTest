@@ -13,11 +13,15 @@ import {
   Navigator,
   TextInput,
   TouchableHighlight,
-  Image
+  Image,
+  BackAndroid
 } from 'react-native';
 import SearchPage from './SearchPage';
 
 import PanResponderExample from './PanResponderExample';
+
+
+var navigator; 
 
 class tedTest extends React.Component {
 
@@ -25,6 +29,21 @@ class tedTest extends React.Component {
   constructor(props){
     super(props);
     this.renderScene = this.renderScene.bind(this);
+
+
+
+
+  }
+
+  componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', () => {
+          console.log('BackAndroid');
+          if (navigator && navigator.getCurrentRoutes().length > 1) {
+              navigator.pop();
+              return true;
+          }
+          return false;
+        });
   }
 
 
@@ -41,6 +60,7 @@ class tedTest extends React.Component {
       
             
    <Navigator
+    ref={(nav) => { navigator = nav; }}
     initialRoute={{ name: defaultName, component: defaultComponent }}
     configureScene={(route) => {
       // return Navigator.SceneConfigs.VerticalDownSwipeJump;
