@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import PropertyView from './PropertyView';
-
+import CheckBox from 'react-native-checkbox';
 export default class SearchResults extends Component {
 
   
@@ -26,7 +26,8 @@ export default class SearchResults extends Component {
     var dataSource = new ListView.DataSource(
       {rowHasChanged: (r1, r2) => r1.thumb_url !== r2.thumb_url});
     this.state = {
-      dataSource: dataSource.cloneWithRows(this.props.listings)
+      dataSource: dataSource.cloneWithRows(this.props.listings),
+      checked: true
     };
   }
  
@@ -44,6 +45,18 @@ export default class SearchResults extends Component {
 	            <Text style={styles.title}
 	                  numberOfLines={1}>{rowData.title}</Text>
 	          </View>
+	          <CheckBox
+	          	  labelStyle = {styles.checkbox}
+	          	  labelBefore = 'true'
+				  label='Label'
+				  checked={this.state.checked}
+				  onChange={(checked) => {
+				  	console.log('I am checked', checked);
+				  	this.setState({
+				  		checked: checked
+				  	});
+				  }}
+				/>
 	        </View>
 	        <View style={styles.separator}/>
 	      </View>
@@ -62,6 +75,7 @@ export default class SearchResults extends Component {
 	  });
 	}
   render() {
+  	console.log('checked:', this.state.checked);
     return (
       <ListView
         dataSource={this.state.dataSource}
@@ -97,5 +111,10 @@ var styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     padding: 10
-  }
+  },
+  checkbox: {
+    fontSize: 20,
+    color: '#c357b5'
+  },
+  
 });

@@ -23,6 +23,8 @@ var ScrollingMenu = require('react-native-scrolling-menu');
 import ProgressBar from 'ProgressBarAndroid';
 
 import SearchResults from './SearchResults';
+import Picker from 'react-native-wheel-picker';
+var PickerItem = Picker.Item;
 
 const scenes = Actions.create(
   <Scene key="root">
@@ -35,6 +37,9 @@ const scenes = Actions.create(
 
 
 const items = ['Menu Item 1','Menu Item 2','Menu Item 3','Menu Item 4','Menu Item 5'];
+import CheckBox from 'react-native-checkbox';
+
+const itemList = ['刘备', '张飞', '关羽', '赵云', '黄忠', '马超', '魏延', '诸葛亮'];
 
 export default class SearchPage extends Component {
 
@@ -43,7 +48,11 @@ export default class SearchPage extends Component {
     this.state = {
       searchString: 'london',
       isLoading: false,
-      message: ''
+      message: '',
+      checked: false,
+      itemList: ['刘备', '张飞', '关羽', '赵云', '黄忠', '马超', '魏延', '诸葛亮'],
+      // itemList: items,
+      selectedItem : 2
     }
 
     this.onSearchTextChanged = this.onSearchTextChanged.bind(this);
@@ -51,6 +60,14 @@ export default class SearchPage extends Component {
 
     this.onLocationPressed = this.onLocationPressed.bind(this);
   }
+
+  onPikcerSelect(index) {
+    this.setState({
+      selectedItem: index,
+    })
+  }
+
+
 
   onSearchTextChanged(event) {
     // console.log('onSearchTextChanged');
@@ -61,7 +78,7 @@ export default class SearchPage extends Component {
 
 
   _executeQuery(query) {
-    console.log(query);
+    // console.log(query);
     // this.setState({ isLoading: true });
     this.setState({
       isLoading: true
@@ -105,7 +122,9 @@ export default class SearchPage extends Component {
   onLocationPressed() {
     navigator.geolocation.getCurrentPosition(
       location => {
+
         var search = location.coords.latitude + ',' + location.coords.longitude;
+        console.log('location' + search);
         this.setState({ searchString: search });
         var query = urlForQueryAndPage('centre_point', search, 1);
         this._executeQuery(query);
@@ -162,7 +181,8 @@ export default class SearchPage extends Component {
           <TextInput
             onChange={this.onSearchTextChanged}
             style={styles.searchInput}
-            value={this.state.searchInput}
+            // value={this.state.searchInput}
+            value={this.state.itemList[this.state.selectedItem]}
             placeholder='Search via name or postcode'/>
 
           <TouchableHighlight style={styles.button}
@@ -178,10 +198,45 @@ export default class SearchPage extends Component {
             >
           <Text style={styles.buttonText}>Location</Text>
         </TouchableHighlight>
+
         <Image
         style={styles.image}
         source={require('./Resources/house.png')}
         />
+
+
+{/*        <CheckBox
+          labelStyle = {styles.checkbox}
+          labelBefore = 'true'
+          label='Label'
+          checked={this.state.checked}
+          onChange={(checked) => {
+            console.log('I am checked', checked);
+            this.setState({
+              checked: checked
+            });
+          }}
+        />
+*/}
+
+{/*        <View style={styles.flowRight}>
+          {friends
+            .filter(f => f.is_online)
+            .map(this.renderView.bind(this))}
+        </View>
+*/} 
+
+        <Picker style={{width: 150, height: 180}}
+          selectedValue={this.state.selectedItem}
+          itemStyle={{color:"black", fontSize:26}}
+          onValueChange={(index) => this.onPikcerSelect(index)}
+        >
+            {this.state.itemList.map((value, i) => (
+              <PickerItem label={value} value={i} key={"money"+value}/>
+            ))}
+        
+        </Picker>
+
         {spinner}
         <Text style={styles.description}>
           {this.state.message}
@@ -192,6 +247,18 @@ export default class SearchPage extends Component {
 
     );
   }
+
+
+  renderView(f){
+    return(
+      <TouchableHighlight style={styles.button}
+              underlayColor='#99d9f4'             
+            >
+              <Text style={styles.buttonText}>{f.first_name}</Text>
+          </TouchableHighlight>     
+    )
+  }
+
 }
 
 
@@ -213,9 +280,36 @@ function urlForQueryAndPage(key, value, pageNumber) {
   return 'http://api.nestoria.co.uk/api?' + querystring;
 };
 
-
+const friends = [
+  {
+    first_name: 'ttt',
+    last_name: 'Doe',
+    is_online: true,
+  },
+  {
+    first_name: 'Jane test',
+    last_name: 'Doe',
+    is_online: true,
+  },
+  {
+    first_name: 'Foo',
+    last_name: 'Bar',
+    is_online: true,
+  },
+  {
+    first_name: 'John ',
+    last_name: 'Doe',
+    is_online: true,
+  },
+];
 
 const styles = StyleSheet.create({
+  // container: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: '#1962dd',
+  // },
   container: {
     padding: 30,
     marginTop: 65,
@@ -258,13 +352,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#48BBEC',
     borderRadius: 8,
-    color: '#48BBEC',
+    color: '#2c65d2',
 
   },
   image: {
   width: 217,
   height: 138
-  }
+  },
+  checkbox: {
+    fontSize: 20,
+    color: '#c357b5'
+  },
 });
 
 

@@ -18,6 +18,14 @@ import {
 import SearchPage from './SearchPage';
 
 class tedTest extends React.Component {
+
+
+  constructor(props){
+    super(props);
+    this.renderScene = this.renderScene.bind(this);
+  }
+
+
   render() {
 
     var defaultName = 'SearchPage';
@@ -26,25 +34,34 @@ class tedTest extends React.Component {
     return (
 
 
-
+            
       
             
-      <Navigator
-        initialRoute={{ name: defaultName, component: defaultComponent }}
-        configureScene={(route) => {
-          // return Navigator.SceneConfigs.VerticalDownSwipeJump;
-          return Navigator.SceneConfigs.FloatFromRight;
-        }}
-        renderScene={(route, navigator) => {
-          let Component = route.component;
-          return <Component {...route.params} navigator={navigator} />
-        }} />
-            
+   <Navigator
+    initialRoute={{ name: defaultName, component: defaultComponent }}
+    configureScene={(route) => {
+      // return Navigator.SceneConfigs.VerticalDownSwipeJump;
+      return Navigator.SceneConfigs.FloatFromRight;
+    }}
+        renderScene={this.renderScene} />
+              
 
     );
   }
+
+
+  renderScene(route, navigator){
+    let Component = route.component;
+    return <Component {...route.params} navigator={navigator} />
+  }
+
+
 }
 
 
 
 AppRegistry.registerComponent('tedTest', () => tedTest);
+
+
+
+
