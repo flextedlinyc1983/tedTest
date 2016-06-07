@@ -22,7 +22,7 @@ import SearchPage from './SearchPage';
 import PanResponderExample from './PanResponderExample';
 
 
-var navigator; 
+var navigator;
 var count=1;
 class tedTest extends React.Component {
 
@@ -38,7 +38,7 @@ class tedTest extends React.Component {
 
   componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', () => {
-          console.log('navigator.getCurrentRoutes().length' + navigator.getCurrentRoutes().length);
+          // console.log('navigator.getCurrentRoutes().length' + navigator.getCurrentRoutes().length);
           if (navigator && navigator.getCurrentRoutes().length > 1) {
               count = 1;
               navigator.pop();
@@ -63,9 +63,9 @@ class tedTest extends React.Component {
     return (
 
 
-            
-      
-            
+
+
+
    <Navigator
     ref={(nav) => { navigator = nav; }}
     initialRoute={{ name: defaultName, component: defaultComponent }}
@@ -74,7 +74,7 @@ class tedTest extends React.Component {
       return Navigator.SceneConfigs.FloatFromRight;
     }}
         renderScene={this.renderScene} />
-              
+
 
     );
   }
@@ -82,8 +82,10 @@ class tedTest extends React.Component {
 
   renderScene(route, navigator){
     let Component = route.component;
-    return <Component {...route.params} navigator={navigator} />
+    return <Component {...route.params} navigator={navigator} url={'https://www.facebook.com'}/>
   }
+
+  
 
 
 }
@@ -91,7 +93,3 @@ class tedTest extends React.Component {
 
 
 AppRegistry.registerComponent('tedTest', () => tedTest);
-
-
-
-

@@ -14,7 +14,9 @@ import {
   TextInput,
   TouchableHighlight,
   Image,
-  ActivityIndicatorIOS
+  ActivityIndicatorIOS,
+  TouchableOpacity,
+  Linking
 } from 'react-native';
 import {Actions, Scene, Router} from 'react-native-router-flux';
 import Login from './Login';
@@ -24,6 +26,11 @@ import ProgressBar from 'ProgressBarAndroid';
 
 import SearchResults from './SearchResults';
 import Picker from 'react-native-wheel-picker';
+
+
+
+import RNFS from 'react-native-fs';
+
 var PickerItem = Picker.Item;
 
 const scenes = Actions.create(
@@ -43,6 +50,13 @@ const itemList = ['刘备', '张飞', '关羽', '赵云', '黄忠', '马超', '�
 
 export default class SearchPage extends Component {
 
+
+
+
+  static propTypes = {
+    url: React.PropTypes.string,
+  };
+
   constructor(props){
     super(props);
     this.state = {
@@ -59,7 +73,22 @@ export default class SearchPage extends Component {
     this.onSearchPressed = this.onSearchPressed.bind(this);
 
     this.onLocationPressed = this.onLocationPressed.bind(this);
-  }
+
+
+    var path = RNFS.DocumentDirectoryPath + '/test.txt';
+    console.log('path'+ path);
+    // write the file
+    RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
+      .then((success) => {
+        console.log('FILE WRITTEN!');
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+
+
+
+  }                   
 
   onPikcerSelect(index) {
     this.setState({
@@ -237,6 +266,16 @@ export default class SearchPage extends Component {
         
         </Picker>
 
+
+        {/*<TouchableOpacity onPress={this.clickMe.bind(this)}>*/}
+        <TouchableOpacity onPress={this.handleClick.bind(this)}>
+          <View style={styles.buttonLink}>
+            <Text style={styles.textLink}>Open {this.props.url}</Text>
+          </View>
+        </TouchableOpacity>
+
+
+
         {spinner}
         <Text style={styles.description}>
           {this.state.message}
@@ -249,6 +288,19 @@ export default class SearchPage extends Component {
   }
 
 
+  handleClick() {
+    Linking.canOpenURL(this.props.url)
+    .then(supported => {
+      if (supported) {
+        Linking.openURL(this.props.url);
+        console.log(`url:${this.props.url}`);
+      } else {
+        console.log('Don\'t know how to open URI: ' + this.props.url);
+      }
+    });
+  }
+
+
   renderView(f){
     return(
       <TouchableHighlight style={styles.button}
@@ -257,6 +309,10 @@ export default class SearchPage extends Component {
               <Text style={styles.buttonText}>{f.first_name}</Text>
           </TouchableHighlight>     
     )
+  }
+
+  clickMe() {
+    alert('Hi!');
   }
 
 }
@@ -362,6 +418,22 @@ const styles = StyleSheet.create({
   checkbox: {
     fontSize: 20,
     color: '#c357b5'
+  },
+  box: {
+    borderColor: 'red',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    padding: 10,
+    width: 100,
+    height: 100
+  },
+  buttonLink: {
+    padding: 10,
+    backgroundColor: '#3B5998',
+    marginBottom: 10,
+  },
+  textLink: {
+    color: 'white',
   },
 });
 
