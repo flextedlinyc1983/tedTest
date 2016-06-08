@@ -22,6 +22,11 @@ import SearchPage from './SearchPage';
 import PanResponderExample from './PanResponderExample';
 
 import QRCodeSample from './QRCodeSample';
+  
+import GiftedListviewExample from './GiftedListviewExample';
+    
+  
+
 
 
 var navigator;
