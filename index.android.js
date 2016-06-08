@@ -21,6 +21,8 @@ import SearchPage from './SearchPage';
 
 import PanResponderExample from './PanResponderExample';
 
+import QRCodeSample from './QRCodeSample';
+
 
 var navigator;
 var count=1;
@@ -78,8 +80,8 @@ class tedTest extends React.Component {
 
     );
   }
-
-
+  
+  
   renderScene(route, navigator){
     let Component = route.component;
     return <Component {...route.params} navigator={navigator} url={'https://www.facebook.com'}/>
